@@ -1,3 +1,4 @@
+import BuyCardButton from "@/components/cards/BuyCardButton";
 import Navbar from "@/components/navbar/Navbar";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Card as CardType } from "@/db/schema";
 import { checkEnvironment } from "@/lib/checkEnv";
+import { getStripe } from "@/lib/stripeClient";
 
 async function getData() {
   const res = await fetch(
@@ -33,7 +35,7 @@ export default async function Home() {
               <CardDescription>{card.description}</CardDescription>
             </CardHeader>
             <CardFooter>
-              <Button>Buy for Rs.{card.price}</Button>
+              <BuyCardButton card={card} />
             </CardFooter>
           </Card>
         ))}

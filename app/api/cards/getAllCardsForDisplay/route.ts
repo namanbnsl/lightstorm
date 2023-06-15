@@ -10,5 +10,5 @@ export async function GET() {
 
   const cards_data = await db.select().from(cards);
 
-  return NextResponse.json({ cards: cards_data });
+  return NextResponse.json({ cards: cards_data ?? [] });
 }
