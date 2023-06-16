@@ -1,10 +1,35 @@
+import { users } from "@/db/schema";
+import getSession from "@/lib/getSession";
 import { stripe } from "@/lib/stripe";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/postgres-js";
 import { NextResponse } from "next/server";
+import postgres from "postgres";
 
 export async function POST(request: Request) {
   const { price, name, description } = await request.json();
 
   try {
+    const connectionString = process.env.DATABASE_URL as string;
+    const sql = postgres(connectionString, { max: 1 });
+    const db = drizzle(sql);
+
+    const user_session = await getSession();
+
+    const customer_data: { metadata: { email: string }; email: string } = {
+      metadata: {
+        email: user_session?.user?.email as string,
+      },
+      email: user_session?.user?.email as string,
+    };
+
+    const customer = await stripe.customers.create(customer_data);
+
+    await db
+      .update(users)
+      .set({ customer_id: customer.id })
+      .where(eq(users.email, user_session?.user?.email as string));
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       billing_address_collection: "required",
