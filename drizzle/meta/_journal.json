@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1686048922958,
-      "tag": "0000_sloppy_meltdown",
-      "breakpoints": false
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1686049440031,
-      "tag": "0001_round_doctor_octopus",
-      "breakpoints": false
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1686741803096,
-      "tag": "0002_complete_rafael_vega",
-      "breakpoints": false
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1686741964545,
-      "tag": "0003_true_venom",
-      "breakpoints": false
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1686921618032,
-      "tag": "0004_many_inertia",
-      "breakpoints": false
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1686922391751,
-      "tag": "0005_cool_pixie",
-      "breakpoints": false
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1686923504151,
-      "tag": "0006_blushing_hercules",
+      "when": 1686972639911,
+      "tag": "0000_deep_mastermind",
       "breakpoints": false
     }
   ]

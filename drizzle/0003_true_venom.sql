@@ -1,2 +1,0 @@
-ALTER TABLE "cards" ADD PRIMARY KEY ("name");
-ALTER TABLE "cards" ALTER COLUMN "name" SET NOT NULL;

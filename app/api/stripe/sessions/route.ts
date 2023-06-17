@@ -16,24 +16,43 @@ export async function POST(request: Request) {
 
     const user_session = await getSession();
 
-    const customer_data: { metadata: { email: string }; email: string } = {
-      metadata: {
-        email: user_session?.user?.email as string,
-      },
-      email: user_session?.user?.email as string,
-    };
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, user_session?.user?.email!));
 
-    const customer = await stripe.customers.create(customer_data);
+    let customerId: string;
 
-    await db
-      .update(users)
-      .set({ customer_id: customer.id })
-      .where(eq(users.email, user_session?.user?.email as string));
+    if (user.customer_id) {
+      customerId = user.customer_id;
+    } else {
+      const customer_data: {
+        metadata: { email: string };
+        email: string;
+        name: string;
+      } = {
+        metadata: {
+          email: user_session?.user?.email!,
+        },
+        name: user_session?.user?.name!,
+        email: user_session?.user?.email!,
+      };
+
+      const customer = await stripe.customers.create(customer_data);
+
+      await db
+        .update(users)
+        .set({ customer_id: customer.id })
+        .where(eq(users.email, user_session?.user?.email as string));
+
+      customerId = customer.id;
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       billing_address_collection: "required",
       mode: "payment",
+      customer: customerId,
       line_items: [
         {
           price_data: {
